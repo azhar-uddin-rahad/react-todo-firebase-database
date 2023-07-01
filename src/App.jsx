@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
-
+import {getDatabase, push, ref, set} from 'firebase/database'
 function App() {
+  const db=getDatabase()
   const [inputValue,setInputValue]=useState({
     firstName: "",
     lastName: "",
@@ -16,6 +15,10 @@ function App() {
   }
 
   const handlePost=()=>{
+    set(push(ref(db,'todoReact')),{
+      fName: inputValue.firstName,
+      lName: inputValue.lastName
+    })
    
   }
   return (
