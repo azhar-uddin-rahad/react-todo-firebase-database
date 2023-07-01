@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import {getDatabase, onValue, push, ref, set} from 'firebase/database'
+import {getDatabase, onValue, push, ref, remove, set} from 'firebase/database'
 function App() {
   const db=getDatabase()
   const [inputValue,setInputValue]=useState({
@@ -32,12 +32,17 @@ function App() {
         setInfoArr(arr)
     })
   },[])
+
+  const handleDelete=(id)=>{
+    remove(ref(db,'todoReact/' + id))
+
+  }
   return (
     <>
      <input type="text" name='firstName' placeholder='Type First Name' onChange={handleChange}/>
      <input type="text" name="lastName" placeholder='Type last Name' onChange={handleChange}/>
      <button onClick={handlePost}>Post</button>
-      <ul>{infoArr.map((item,index)=><li key={index}>{item.fName}----{item.lName}---{item.id}</li>)
+      <ul>{infoArr.map((item,index)=><li key={index}>{item.fName}----{item.lName}---{item.id} <button>Edit</button><button onClick={()=>{handleDelete(item.id)}}>Delete</button></li>)
         
         
         }</ul>
