@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import './App.css'
-import {getDatabase, push, ref, set} from 'firebase/database'
+import {getDatabase, onValue, push, ref, set} from 'firebase/database'
 function App() {
   const db=getDatabase()
   const [inputValue,setInputValue]=useState({
     firstName: "",
     lastName: "",
   })
+  const [infoArr,setInfoArr]=useState([])
   const handleChange=(e)=>{
     setInputValue({
       ...inputValue,
@@ -19,14 +20,27 @@ function App() {
       fName: inputValue.firstName,
       lName: inputValue.lastName
     })
-   
   }
+
+  useState(()=>{
+    const databaseRef=ref(db,'todoReact');
+    onValue(databaseRef,(snapshot)=>{
+      let arr=[];
+        snapshot.forEach(item=>{
+          arr.push({...item.val(),id: item.key})
+        })
+        setInfoArr(arr)
+    })
+  },[])
   return (
     <>
      <input type="text" name='firstName' placeholder='Type First Name' onChange={handleChange}/>
      <input type="text" name="lastName" placeholder='Type last Name' onChange={handleChange}/>
      <button onClick={handlePost}>Post</button>
-
+      <ul>{infoArr.map((item,index)=><li key={index}>{item.fName}----{item.lName}---{item.id}</li>)
+        
+        
+        }</ul>
     </>
   )
 }
