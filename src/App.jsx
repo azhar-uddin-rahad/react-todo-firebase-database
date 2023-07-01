@@ -13,15 +13,16 @@ function App() {
       ...inputValue,
       [e.target.name]: e.target.value
     })
-    console.log(inputValue)
-
   }
 
+  const handlePost=()=>{
+   
+  }
   return (
     <>
      <input type="text" name='firstName' placeholder='Type First Name' onChange={handleChange}/>
      <input type="text" name="lastName" placeholder='Type last Name' onChange={handleChange}/>
-     <button>Post</button>
+     <button onClick={handlePost}>Post</button>
 
     </>
   )
